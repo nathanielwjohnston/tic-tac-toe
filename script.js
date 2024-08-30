@@ -1,13 +1,21 @@
 const gameBoard = (function () {
   const board = [...Array(9)];
 
-  const updateBoard = function (player, position) {
-    board.splice(position, 1, player);
+  const updateBoard = function (playerMarker, position) {
+    if (marker !== "X" && marker !== "O") {
+      console.log("Unsupported marker");
+      return;
+    }
+    board.splice(position, 1, playerMarker);
+  }
+
+  const resetBoard = function () {
+    board.splice(0, 9, undefined);
   }
 
   const getBoard = () => board;
 
-  return {updateBoard, getBoard};
+  return {updateBoard, resetBoard, getBoard};
 })();
 
 function createPlayer (marker) {
@@ -26,3 +34,11 @@ function createPlayer (marker) {
 
   return {marker, getScore, addScore};
 }
+
+const gameController = (function (gameBoard) {
+  // Create players
+  const player1 = createPlayer("X");
+  const player2 = createPlayer("O");
+
+
+})();
