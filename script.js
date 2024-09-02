@@ -129,3 +129,26 @@ const gameController = (function () {
 
   return {playRound, getDraws};
 })();
+
+const displayContoller = (function () {
+  const renderBoard = function () {
+    const gameBoardDisplay = document.querySelector(".game-board");
+    const gameBoardDisplaySquares = gameBoardDisplay
+                                      .querySelectorAll(".game-board-squares");
+    const board = gameBoard.getBoard();                                      
+
+    gameBoardDisplaySquares.forEach((square, index) => {
+      let marker;
+      if (board[index] === undefined) {
+        marker = " ";
+      } else {
+        marker = board[index];
+      }
+      square.textContent = marker;
+    })
+  }
+
+  
+
+  return {renderBoard};
+})();
