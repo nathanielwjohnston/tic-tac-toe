@@ -35,6 +35,41 @@ function createPlayer (marker) {
   return {marker, getScore, addScore};
 }
 
+const displayContoller = (function () {
+  const renderBoard = function () {
+    const gameBoardDisplay = document.querySelector(".game-board");
+    const gameBoardDisplaySquares = gameBoardDisplay
+                                      .querySelectorAll(".game-board-squares");
+    const board = gameBoard.getBoard();                                      
+
+    gameBoardDisplaySquares.forEach((square, index) => {
+      let marker;
+      if (board[index] === undefined) {
+        marker = "";
+      } else {
+        marker = board[index];
+      }
+      square.textContent = marker;
+    })
+  }
+
+  const getMove = function () {
+    const gameBoardDisplay = document.querySelector(".game-board");
+    gameBoardDisplay.addEventListener("click", e => {
+      const gameBoardDisplaySquare = e.target;
+      if (gameBoardDisplaySquare.textContent === "") {
+        console.log(gameBoardDisplaySquare.dataset.boardPosition);
+      } else {
+        alert("can't place there");
+      }
+    })
+  }
+
+  
+
+  return {renderBoard, getMove};
+})();
+
 const gameController = (function () {
   // Create players
   const player1 = createPlayer("X");
@@ -128,27 +163,4 @@ const gameController = (function () {
   }
 
   return {playRound, getDraws};
-})();
-
-const displayContoller = (function () {
-  const renderBoard = function () {
-    const gameBoardDisplay = document.querySelector(".game-board");
-    const gameBoardDisplaySquares = gameBoardDisplay
-                                      .querySelectorAll(".game-board-squares");
-    const board = gameBoard.getBoard();                                      
-
-    gameBoardDisplaySquares.forEach((square, index) => {
-      let marker;
-      if (board[index] === undefined) {
-        marker = " ";
-      } else {
-        marker = board[index];
-      }
-      square.textContent = marker;
-    })
-  }
-
-  
-
-  return {renderBoard};
 })();
