@@ -53,18 +53,24 @@ const displayContoller = (function () {
     })
   }
 
-  const getMove = function () {
-    const gameBoardDisplay = document.querySelector(".game-board");
-    gameBoardDisplay.addEventListener("click", e => {
-      const gameBoardDisplaySquare = e.target;
-      if (gameBoardDisplaySquare.textContent === "") {
-        gameController.takeTurn(gameBoardDisplaySquare.dataset.boardPosition);
-      } else {
-        alert("can't place there");
-      }
-    })
+  function squareClicking (e) {
+    const gameBoardDisplaySquare = e.target;
+    if (gameBoardDisplaySquare.textContent === "") {
+      gameController.takeTurn(gameBoardDisplaySquare.dataset.boardPosition);
+    } else {
+      alert("can't place there");
+    }
   }
 
+  const getMove = function () {
+    const gameBoardDisplay = document.querySelector(".game-board");
+    gameBoardDisplay.addEventListener("click", squareClicking)
+  }
+
+  const preventMoves = function () {
+    const gameBoardDisplay = document.querySelector(".game-board");
+    gameBoardDisplay.removeEventListener("click", squareClicking);
+  }
 
 
   return {renderBoard, getMove, preventMoves};
@@ -88,7 +94,9 @@ const gameController = (function () {
     displayContoller.renderBoard();
     rounds--;
 
-    checkForWin(currentPlayer);
+    if (checkForWin(currentPlayer)) {
+      displayContoller.preventMoves();
+    }
 
     if (currentPlayer === player1) {
       currentPlayer = player2;
@@ -98,7 +106,7 @@ const gameController = (function () {
 
     if (rounds === 0) {
       addDraw();
-      
+      displayContoller.preventMoves();
     }
   }
 
