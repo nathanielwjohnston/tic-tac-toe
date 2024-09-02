@@ -58,16 +58,16 @@ const displayContoller = (function () {
     gameBoardDisplay.addEventListener("click", e => {
       const gameBoardDisplaySquare = e.target;
       if (gameBoardDisplaySquare.textContent === "") {
-        console.log(gameBoardDisplaySquare.dataset.boardPosition);
+        gameController.takeTurn(gameBoardDisplaySquare.dataset.boardPosition);
       } else {
         alert("can't place there");
       }
     })
   }
 
-  
 
-  return {renderBoard, getMove};
+
+  return {renderBoard, getMove, preventMoves};
 })();
 
 const gameController = (function () {
@@ -80,22 +80,26 @@ const gameController = (function () {
   const getDraws = () => draws;
   const addDraw = () => draws++;
 
-  const takeTurn = function (player) {
-    let position;
+  let rounds = 9;
+  let currentPlayer = player1;
 
-    while (true) {
-      position = parseInt(prompt(`Player's move:`));
-      const board = gameBoard.getBoard();
+  const takeTurn = function (position) {
+    gameBoard.updateBoard(currentPlayer.marker, position);
+    displayContoller.renderBoard();
+    rounds--;
 
-      if (position < 9 && board[position] === undefined) {
-        console.log("approved move");
-        break;
-      }
+    checkForWin(currentPlayer);
 
-      console.log("not approved, try again");
+    if (currentPlayer === player1) {
+      currentPlayer = player2;
+    } else {
+      currentPlayer = player1;
     }
 
-    gameBoard.updateBoard(player.marker, position);
+    if (rounds === 0) {
+      addDraw();
+      
+    }
   }
 
   const checkForWin = function (player) {
@@ -111,7 +115,7 @@ const gameController = (function () {
       [3,4,5],
       [6,7,8]
     ];
-    // if players has made at least 3 moves (can't win with less)
+    // if player has made at least 3 moves (can't win with less)
     if (
       board.filter((currentMarker) => currentMarker === marker)
         .length > 2
@@ -132,35 +136,5 @@ const gameController = (function () {
     return false;
   }
 
-
-  const playRound = function () {
-    const totalTurns = 9;
-
-    for (let i = 0; i < totalTurns; i++) {
-      let currentPlayer;
-      if (i % 2 === 0) {
-        currentPlayer = player1;
-      } else {
-        currentPlayer = player2;
-      }
-
-      // pick square
-      takeTurn(currentPlayer);
-
-      // check for win
-      if (checkForWin(currentPlayer)) {
-        break;
-      };
-
-      // for draw
-      if (i === (totalTurns - 1)) {
-        addDraw();
-      }
-    }
-
-    // end round
-    gameBoard.resetBoard();
-  }
-
-  return {playRound, getDraws};
+  return {getDraws, takeTurn};
 })();
