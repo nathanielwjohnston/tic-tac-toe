@@ -78,11 +78,16 @@ const displayContoller = (function () {
       // Set false to keep up to date for later checks when starting games
       gameBoardDisplay.dataset.takingMoves = false;
     }
-
   }
 
-
-  return {renderBoard, getMoves, preventMoves};
+  const listenForGameStart = function () {
+    const startButton = document.querySelector(".start-game-button");
+    startButton.addEventListener("click", () => {
+      gameController.startNewGame();
+    })
+  }
+  
+  return {renderBoard, getMoves, preventMoves, listenForGameStart};
 })();
 
 const gameController = (function () {
