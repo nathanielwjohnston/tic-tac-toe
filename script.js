@@ -62,18 +62,27 @@ const displayContoller = (function () {
     }
   }
 
-  const getMove = function () {
+  const getMoves = function () {
     const gameBoardDisplay = document.querySelector(".game-board");
-    gameBoardDisplay.addEventListener("click", squareClicking)
+    gameBoardDisplay.addEventListener("click", squareClicking);
+    // To allow for future checks if event listener needs removed
+    gameBoardDisplay.dataset.takingMoves = true;
   }
 
   const preventMoves = function () {
     const gameBoardDisplay = document.querySelector(".game-board");
-    gameBoardDisplay.removeEventListener("click", squareClicking);
+    // Check if event listener exists
+    if (gameBoardDisplay.getAttribute("data-taking-moves") === "true") {
+      // Remove event listener
+      gameBoardDisplay.removeEventListener("click", squareClicking);
+      // Set false to keep up to date for later checks when starting games
+      gameBoardDisplay.dataset.takingMoves = false;
+    }
+
   }
 
 
-  return {renderBoard, getMove, preventMoves};
+  return {renderBoard, getMoves, preventMoves};
 })();
 
 const gameController = (function () {
@@ -144,5 +153,16 @@ const gameController = (function () {
     return false;
   }
 
-  return {getDraws, takeTurn};
+  const startNewGame = function () {
+    // Check not already taking input and remove if so
+    displayContoller.preventMoves();
+    // Start taking inputs
+    displayContoller.getMoves();
+
+    gameBoard.resetBoard();
+
+    displayContoller.renderBoard();
+  }
+
+  return {getDraws, takeTurn, startNewGame};
 })();
