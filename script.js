@@ -106,7 +106,11 @@ const gameController = (function () {
   let draws = 0;
 
   const getDraws = () => draws;
-  const addDraw = () => draws++;
+  const addDraw = () => {
+    draws++;
+    displayContoller.updateScoreDisplay(player1.getScore(), 
+      player2.getScore(), getDraws());
+  };
 
   let rounds = 9;
   let currentPlayer = player1;
@@ -118,6 +122,8 @@ const gameController = (function () {
 
     if (checkForWin(currentPlayer)) {
       displayContoller.preventMoves();
+      // reset rounds to 9
+      rounds = 9;
     }
 
     if (currentPlayer === player1) {
@@ -129,6 +135,7 @@ const gameController = (function () {
     if (rounds === 0) {
       addDraw();
       displayContoller.preventMoves();
+      rounds = 9;
     }
   }
 
@@ -157,7 +164,8 @@ const gameController = (function () {
           .length === 3
         ) {
           player.addScore();
-          console.log("won");
+          displayContoller.updateScoreDisplay(player1.getScore(),
+            player2.getScore(), getDraws());
           return true;
         }
       }
