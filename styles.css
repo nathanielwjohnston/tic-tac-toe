@@ -65,8 +65,14 @@ body {
   ========================================================================== */
 
 .score-container {
-  display: grid;
-  grid-auto-flow: column;
-  place-items: center;
-  gap: 1em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.score-container * {
+  flex-basis: 33%;
+  text-align: center;
 }

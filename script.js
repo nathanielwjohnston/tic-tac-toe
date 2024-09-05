@@ -87,9 +87,11 @@ const displayContoller = (function () {
     })
   }
 
-  const updateScoreDisplay = function (player1Score, player2Score) {
+  const updateScoreDisplay = function (player1Score, player2Score, draws) {
     const scoreDisplay = document.querySelector(".game-score-display");
+    const drawDisplay = document.querySelector(".game-draw-display");
     scoreDisplay.textContent = `${player1Score} : ${player2Score}`;
+    drawDisplay.textContent = `Draws: ${draws}`;
   }
   
   return {renderBoard, getMoves, preventMoves, listenForGameStart,
