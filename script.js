@@ -84,6 +84,9 @@ const displayContoller = (function () {
     const startButton = document.querySelector(".start-game-button");
     startButton.addEventListener("click", () => {
       gameController.startNewGame();
+      if (startButton.textContent = "Start") {
+        startButton.textContent = "Restart"
+      }
     })
   }
 
@@ -108,8 +111,6 @@ const gameController = (function () {
   const getDraws = () => draws;
   const addDraw = () => {
     draws++;
-    displayContoller.updateScoreDisplay(player1.getScore(), 
-      player2.getScore(), getDraws());
   };
 
   let rounds = 9;
@@ -121,9 +122,8 @@ const gameController = (function () {
     rounds--;
 
     if (checkForWin(currentPlayer)) {
-      displayContoller.preventMoves();
-      // reset rounds to 9
-      rounds = 9;
+      currentPlayer.addScore();
+      endGame();
     }
 
     if (currentPlayer === player1) {
@@ -134,8 +134,7 @@ const gameController = (function () {
 
     if (rounds === 0) {
       addDraw();
-      displayContoller.preventMoves();
-      rounds = 9;
+      endGame();
     }
   }
 
@@ -162,16 +161,20 @@ const gameController = (function () {
         if (winCondition
           .filter(winPosition => board[winPosition] === marker)
           .length === 3
-        ) {
-          player.addScore();
-          displayContoller.updateScoreDisplay(player1.getScore(),
-            player2.getScore(), getDraws());
+        ) {;
           return true;
         }
       }
     }
 
     return false;
+  }
+
+  const endGame = function () {
+    displayContoller.preventMoves();
+    displayContoller.updateScoreDisplay(player1.getScore(), 
+    player2.getScore(), getDraws());
+    rounds = 9;
   }
 
   const startNewGame = function () {
