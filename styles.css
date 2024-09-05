@@ -36,7 +36,7 @@ body {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: 8fr 1fr;
+  grid-template-rows: 1fr 8fr 1fr;
   place-items: center;
 }
 
@@ -58,4 +58,15 @@ body {
   font-size: 6em;
   display: grid;
   place-items: center;
+}
+
+/* ==========================================================================
+  Scoreboard 
+  ========================================================================== */
+
+.score-container {
+  display: grid;
+  grid-auto-flow: column;
+  place-items: center;
+  gap: 1em;
 }

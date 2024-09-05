@@ -86,8 +86,14 @@ const displayContoller = (function () {
       gameController.startNewGame();
     })
   }
+
+  const updateScoreDisplay = function (player1Score, player2Score) {
+    const scoreDisplay = document.querySelector(".game-score-display");
+    scoreDisplay.textContent = `${player1Score} : ${player2Score}`;
+  }
   
-  return {renderBoard, getMoves, preventMoves, listenForGameStart};
+  return {renderBoard, getMoves, preventMoves, listenForGameStart,
+    updateScoreDisplay};
 })();
 
 const gameController = (function () {
@@ -171,3 +177,5 @@ const gameController = (function () {
 
   return {getDraws, takeTurn, startNewGame};
 })();
+
+displayContoller.listenForGameStart();
