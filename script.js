@@ -25,6 +25,7 @@ function createPlayer (marker) {
     return;
   }
 
+  let name;
   let score = 0;
 
   const getScore = () => score;
@@ -32,7 +33,10 @@ function createPlayer (marker) {
   // just for getting score
   const addScore = () => score++;
 
-  return {marker, getScore, addScore};
+  const updateName = (newName) => name = newName;
+  const getName = () => name;
+
+  return {marker, getScore, addScore, getName, updateName};
 }
 
 const displayContoller = (function () {
@@ -96,9 +100,47 @@ const displayContoller = (function () {
     scoreDisplay.textContent = `${player1Score} : ${player2Score}`;
     drawDisplay.textContent = `Draws: ${draws}`;
   }
+
+  const listenForNameChange = function () {
+    const playerNameDisplays = document.querySelectorAll(".player-name-display");
+    playerNameDisplays.forEach(display => {
+      display.addEventListener("keydown", e => {
+        const maxChars = 15;
+        const key = e.key;
+    
+        if (e.target.textContent.length === maxChars && key !== "Backspace" && key !== "Enter") {
+          console.log("too long");
+          e.preventDefault();
+        } else if (key === "Enter") {
+          e.preventDefault();
+          display.removeAttribute("contenteditable");
+          // save name
+        }
+
+      })
+
+      // setting contenteditable like this allows the enter key to be used to
+      // also save the player's name
+      display.addEventListener("click", e => {
+        display.setAttribute("contenteditable", "true");
+        display.focus();
+        const originalText = display.textContent;
+
+        // check click outside, undo changes instead
+        document.addEventListener("click", function undoChanges(e) {
+          if (!display.contains(e.target)) {
+            display.removeAttribute("contenteditable");
+            // undo changes
+            display.textContent = originalText;
+            this.removeEventListener("click", undoChanges);
+          }
+        })
+      })
+    })
+  }
   
   return {renderBoard, getMoves, preventMoves, listenForGameStart,
-    updateScoreDisplay};
+    updateScoreDisplay, listenForNameChange};
 })();
 
 const gameController = (function () {
@@ -186,6 +228,17 @@ const gameController = (function () {
     gameBoard.resetBoard();
 
     displayContoller.renderBoard();
+  }
+
+  const updatePlayerName = function (chosenPlayer) {
+    let player;
+    if (chosenPlayer === "player1") {
+      player = player1;
+    } else {
+      player = player2;
+    }
+
+
   }
 
   return {getDraws, takeTurn, startNewGame};

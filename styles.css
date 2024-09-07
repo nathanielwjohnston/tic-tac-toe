@@ -65,14 +65,26 @@ body {
   ========================================================================== */
 
 .score-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 4em 1fr;
+  grid-template-rows: repeat(2, 1fr);
   align-items: center;
+  gap: 1em;
 }
 
-.score-container * {
-  flex-basis: 33%;
+.game-score-display {
+  text-align: center;
+}
+
+.score-container .first-player-name-display {
+  text-align: right;
+}
+
+.score-container .second-player-name-display {
+  text-align: left;
+}
+
+.game-draw-display {
+  grid-area: 2 / 2 / 3 / 3;
   text-align: center;
 }
