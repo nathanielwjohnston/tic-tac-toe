@@ -261,3 +261,4 @@ const gameController = (function () {
 })();
 
 displayContoller.listenForGameStart();
+displayContoller.listenForNameChange();
