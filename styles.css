@@ -33,12 +33,23 @@ body {
   font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
 }
 
+/* Variables */
+* {
+  --primary-colour: #262626;
+  --light-primary-colour: #52525b;
+  --dark-primary-colour: #18181b;
+  --accent-colour-one: #0891b2;
+  --accent-colour-two: #b22908;
+}
+
 /* ==========================================================================
   Game Board 
   ========================================================================== */
 
 body {
   height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .middle-container {
