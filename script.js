@@ -108,13 +108,18 @@ const displayContoller = (function () {
         const maxChars = 15;
         const key = e.key;
     
-        if (e.target.textContent.length === maxChars && key !== "Backspace" && key !== "Enter") {
-          console.log("too long");
+        if (e.target.textContent.length === maxChars &&
+            key !== "Backspace" &&
+            key !== "Enter") {
           e.preventDefault();
+          console.log("too long");
         } else if (key === "Enter") {
           e.preventDefault();
           display.removeAttribute("contenteditable");
           // save name
+          updatePlayerNameDisplay(display.textContent, display.dataset.playerPosition);
+          gameController
+            .updatePlayerName(display.dataset.player, display.textContent);
         }
 
       })
@@ -128,14 +133,25 @@ const displayContoller = (function () {
 
         // check click outside, undo changes instead
         document.addEventListener("click", function undoChanges(e) {
-          if (!display.contains(e.target)) {
-            display.removeAttribute("contenteditable");
-            // undo changes
-            display.textContent = originalText;
+          if (display.hasAttribute("contenteditable")) {
+            if (!display.contains(e.target)) {
+              display.removeAttribute("contenteditable");
+              // undo changes
+              display.textContent = originalText;
+              this.removeEventListener("click", undoChanges);
+            }
+          } else {
             this.removeEventListener("click", undoChanges);
           }
         })
       })
+    })
+  }
+
+  const updatePlayerNameDisplay = function (name, playerPosition) {
+    const displayNames = document.querySelectorAll(`.${playerPosition}-player-name-display`);
+    displayNames.forEach(display => {
+      display.textContent = name;
     })
   }
   
@@ -230,7 +246,7 @@ const gameController = (function () {
     displayContoller.renderBoard();
   }
 
-  const updatePlayerName = function (chosenPlayer) {
+  const updatePlayerName = function (chosenPlayer, newName) {
     let player;
     if (chosenPlayer === "player1") {
       player = player1;
@@ -238,10 +254,10 @@ const gameController = (function () {
       player = player2;
     }
 
-
+    player.updateName(newName);
   }
 
-  return {getDraws, takeTurn, startNewGame};
+  return {getDraws, takeTurn, startNewGame, updatePlayerName, player1};
 })();
 
 displayContoller.listenForGameStart();
