@@ -104,22 +104,31 @@ const displayContoller = (function () {
   const listenForNameChange = function () {
     const playerNameDisplays = document.querySelectorAll(".player-name-display");
     playerNameDisplays.forEach(display => {
+      let displayParent = display.parentElement;
       display.addEventListener("keydown", e => {
-        const maxChars = 15;
+        const maxChars = 12;
         const key = e.key;
     
-        if (e.target.textContent.length === maxChars &&
+        if (display.textContent.length === maxChars &&
             key !== "Backspace" &&
             key !== "Enter") {
           e.preventDefault();
-          console.log("too long");
+          displayParent.classList.add("child-name-too-long");
         } else if (key === "Enter") {
           e.preventDefault();
           display.removeAttribute("contenteditable");
+          displayParent.classList.remove("child-editing");
           // save name
           updatePlayerNameDisplay(display.textContent, display.dataset.playerPosition);
           gameController
             .updatePlayerName(display.dataset.player, display.textContent);
+        }
+
+        if (display.textContent.length === maxChars &&
+            key === "Backspace" &&
+            displayParent.classList.contains("child-name-too-long")
+        ) {
+          displayParent.classList.remove("child-name-too-long");
         }
 
       })
@@ -128,6 +137,8 @@ const displayContoller = (function () {
       // also save the player's name
       display.addEventListener("click", e => {
         display.setAttribute("contenteditable", "true");
+        // Child editing class is to pass information on input back to user
+        displayParent.classList.add("child-editing");
         display.focus();
         const originalText = display.textContent;
 
@@ -136,6 +147,7 @@ const displayContoller = (function () {
           if (display.hasAttribute("contenteditable")) {
             if (!display.contains(e.target)) {
               display.removeAttribute("contenteditable");
+              displayParent.classList.remove("child-editing");
               // undo changes
               display.textContent = originalText;
               this.removeEventListener("click", undoChanges);

@@ -42,21 +42,62 @@ body {
   --accent-colour-two: #b22908;
 }
 
-/* ==========================================================================
-  Game Board 
-  ========================================================================== */
-
 body {
   height: 100vh;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  color: var(--primary-colour);
 }
+
+.player-name-display:not(:focus-visible) {
+  cursor: pointer;
+}
+
+.first-player-name-display:not(:focus-visible)::before {
+  content: url(assets/pencil-outline.svg);
+}
+
+.second-player-name-display:not(:focus-visible)::after {
+  content: url(assets/pencil-outline.svg);
+}
+
+.player-name-display:focus-visible {
+  width: 20ch;
+}
+
+.player-name-display {
+  padding: 0.2em 0.5em;
+}
+
+/* Child editing class is to pass information on input back to user */
+.name-display-container.child-editing::after {
+  content: "Click off to cancel, press enter to save";
+  font-size: 0.8em;
+  position: absolute;
+  margin-top: 0.1em;
+}
+
+.name-display-container.child-editing.child-name-too-long::after {
+  content: "Max. 12 characters";
+  font-size: 0.8em;
+  position: absolute;
+  margin-top: 0.1em;
+  color: red;
+}
+
+.name-display-container.child-editing.child-name-too-long .player-name-display {
+  outline-color: red;  
+}
+
+/* ==========================================================================
+  Game Board 
+  ========================================================================== */
 
 .middle-container {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: 1fr 8fr 1fr;
+  grid-template-rows: 1fr 6fr 1fr;
   place-items: center;
 }
 
@@ -87,7 +128,7 @@ body {
 .score-container {
   display: grid;
   grid-template-columns: 1fr 4em 1fr;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: 1.5fr 1frd;
   align-items: center;
   gap: 1em;
 }
@@ -96,13 +137,25 @@ body {
   text-align: center;
 }
 
+.score-container h3 {
+  font-size: 1.5rem;
+}
+
+.score-container h2 {
+  font-size: 2rem;
+}
+
 .score-container .first-player-name-display {
   text-align: right;
+  color: var(--accent-colour-one);
 }
 
 .score-container .second-player-name-display {
   text-align: left;
+  color: var(--accent-colour-two);
 }
+
+.score-container .player-name-display {}
 
 .game-draw-display {
   grid-area: 2 / 1 / 3 / 4;
