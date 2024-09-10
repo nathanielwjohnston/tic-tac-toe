@@ -49,6 +49,10 @@ body {
   color: var(--primary-colour);
 }
 
+/* ==========================================================================
+  Middle Section Misc 
+  ========================================================================== */
+
 .player-name-display:not(:focus-visible) {
   cursor: pointer;
 }
@@ -87,6 +91,21 @@ body {
 
 .name-display-container.child-editing.child-name-too-long .player-name-display {
   outline-color: red;  
+}
+
+.start-game-button {
+  font-size: 1.5em;
+  padding: 0.2em 1.2em;
+  background-color: var(--dark-primary-colour);
+  color: white;
+  border: 2px solid var(--light-primary-colour);
+  border-radius: 5px;
+}
+
+.start-game-button:hover {
+  background-color: var(--light-primary-colour);
+  color: var(--dark-primary-colour);
+  border-color: var(--dark-primary-colour);
 }
 
 /* ==========================================================================
