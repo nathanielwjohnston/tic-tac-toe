@@ -34,12 +34,14 @@ body {
 }
 
 /* Variables */
-* {
+*, body  {
   --primary-colour: #262626;
   --light-primary-colour: #52525b;
   --dark-primary-colour: #18181b;
   --accent-colour-one: #0891b2;
   --accent-colour-two: #b22908;
+  --colour-success: #15803d;
+  --colour-failure: #b91c1c;
 }
 
 body {
@@ -134,10 +136,31 @@ body {
 }
 
 .game-board-squares {
-  border: 1px solid;
-  font-size: 6em;
+  border-top: 4px solid;
+  border-left: 4px solid;
+  font-size: 7em;
   display: grid;
   place-items: center;
+}
+
+.game-board-squares.winning-squares {
+  border-color: var(--primary-colour) !important;
+  color: white;
+  background-color: var(--colour-success);
+}
+
+.game-board-squares.wrong-squares {
+  border-color: var(--primary-colour) !important;
+  color: white;
+  background-color: var(--colour-failure);
+}
+
+.game-board-squares:nth-child(3n) {
+  border-right: 4px solid;
+}
+
+.game-board-squares:nth-last-child(-n + 3) {
+  border-bottom: 4px solid;
 }
 
 /* ==========================================================================
@@ -173,8 +196,6 @@ body {
   text-align: left;
   color: var(--accent-colour-two);
 }
-
-.score-container .player-name-display {}
 
 .game-draw-display {
   grid-area: 2 / 1 / 3 / 4;

@@ -41,6 +41,9 @@ function createPlayer (marker) {
 
 const displayContoller = (function () {
   const renderBoard = function () {
+
+    resetBoardDisplay();
+    
     const gameBoardDisplay = document.querySelector(".game-board");
     const gameBoardDisplaySquares = gameBoardDisplay
                                       .querySelectorAll(".game-board-squares");
@@ -62,7 +65,7 @@ const displayContoller = (function () {
     if (gameBoardDisplaySquare.textContent === "") {
       gameController.takeTurn(gameBoardDisplaySquare.dataset.boardPosition);
     } else {
-      alert("can't place there");
+      gameBoardDisplaySquare.classList.add("wrong-squares");
     }
   }
 
@@ -166,9 +169,22 @@ const displayContoller = (function () {
       display.textContent = name;
     })
   }
+
+  const updateBoardAfterWin = function (winningPositions) {
+    for (let position of winningPositions) {
+      square = document.querySelector(`#square-${position}`);
+      square.classList.add("winning-squares");
+
+    }
+  }
+
+  const resetBoardDisplay = function () {
+    squares = document.querySelectorAll(".game-board-squares");
+    squares.forEach(square => square.classList.remove("winning-squares", "wrong-squares"));
+  }
   
   return {renderBoard, getMoves, preventMoves, listenForGameStart,
-    updateScoreDisplay, listenForNameChange};
+    updateScoreDisplay, listenForNameChange, updateBoardAfterWin};
 })();
 
 const gameController = (function () {
@@ -228,10 +244,12 @@ const gameController = (function () {
     ) {
 
       for (let winCondition of winConditions) {
-        if (winCondition
-          .filter(winPosition => board[winPosition] === marker)
-          .length === 3
+        let positionsMatched = winCondition
+        .filter(winPosition => board[winPosition] === marker)
+        if (positionsMatched.length === 3
         ) {;
+          // call to disp. contr.? to change styles to alert for win (using positionsMatched)
+          displayContoller.updateBoardAfterWin(positionsMatched);
           return true;
         }
       }
